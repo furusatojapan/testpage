@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Furusato Japan — Your Journey. Your Budget. Your Japan.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F4EC;
+    --paper-deep:#EFEADD;
+    --ink:#1B1B16;
+    --ink-soft:rgba(27,27,22,0.62);
+    --green:#2F4A3D;
+    --green-deep:#1E3129;
+    --terracotta:#C1633B;
+    --gold:#C9A66B;
+    --line:rgba(27,27,22,0.14);
+    --line-soft:rgba(27,27,22,0.08);
+    --radius:2px;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  button{font:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+  .wrap{max-width:1240px; margin:0 auto; padding:0 40px;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--terracotta);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--terracotta);}
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:500; letter-spacing:-.01em; line-height:1.08;}
+  h2{font-size:clamp(28px,4vw,44px); font-weight:400;}
+  .section-head{max-width:640px; margin-bottom:56px;}
+  .section-head p{color:var(--ink-soft); font-size:17px; margin-top:16px; max-width:520px;}
+  section{position:relative;}
+  .pad{padding:120px 0;}
+  @media(max-width:900px){ .pad{padding:80px 0;} .wrap{padding:0 24px;} }
+
+  /* ---------- media placeholder ---------- */
+  .media{
+    position:relative;
+    overflow:hidden;
+    border-radius:var(--radius);
+    background:
+      radial-gradient(circle at 30% 20%, rgba(201,166,107,.35), transparent 55%),
+      radial-gradient(circle at 80% 80%, rgba(47,74,61,.55), transparent 55%),
+      linear-gradient(135deg, #2b3e35, #1b241f 70%);
+  }
+  .media::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(115deg, rgba(255,255,255,.035) 0 2px, transparent 2px 6px);
+  }
+  .media .cap{
+    position:absolute; left:14px; bottom:12px; right:14px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px; letter-spacing:.03em;
+    color:rgba(247,244,236,.72);
+    display:flex; align-items:center; gap:8px;
+  }
+  .media .cap::before{content:"◎"; color:var(--gold); font-size:11px;}
+  .media.video .cap::before{content:"▸"; }
+
+  /* ---------- header ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:22px 0;
+    transition:background .4s var(--ease), padding .4s var(--ease), border-color .4s var(--ease);
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{
+    background:rgba(247,244,236,.92);
+    backdrop-filter:blur(10px);
+    padding:16px 0;
+    border-color:var(--line);
+  }
+  header .wrap{display:flex; align-items:center; justify-content:space-between;}
+  .logo{font-family:'Fraunces', serif; font-size:19px; font-weight:500; letter-spacing:-.01em; color:var(--paper);}
+  header.scrolled .logo{color:var(--ink);}
+  .logo span{color:var(--terracotta);}
+  nav{display:flex; align-items:center; gap:36px;}
+  .nav-links{display:flex; gap:32px;}
+  .nav-links a{
+    font-size:13.5px; color:rgba(247,244,236,.85); letter-spacing:.02em;
+    transition:color .3s;
+    position:relative;
+  }
+  header.scrolled .nav-links a{color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--gold);}
+  header.scrolled .nav-links a:hover{color:var(--terracotta);}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 22px;
+    font-size:13.5px; font-weight:600; letter-spacing:.01em;
+    border-radius:var(--radius);
+    transition:all .3s var(--ease);
+  }
+  .btn-primary{background:var(--terracotta); color:#fff;}
+  .btn-primary:hover{background:#a8522f; transform:translateY(-1px);}
+  .btn-ghost{border:1px solid rgba(247,244,236,.4); color:var(--paper);}
+  header.scrolled .btn-ghost{border-color:var(--line); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--gold); color:var(--gold);}
+  .hamburger{display:none; flex-direction:column; gap:5px; width:24px;}
+  .hamburger span{height:1.5px; background:var(--paper); display:block;}
+  header.scrolled .hamburger span{background:var(--ink);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    height:100vh; min-height:680px;
+    display:flex; align-items:flex-end;
+    color:var(--paper);
+    position:relative;
+  }
+  .hero .media{position:absolute; inset:0; border-radius:0;}
+  .hero .media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(15,18,15,.86) 0%, rgba(15,18,15,.35) 45%, rgba(15,18,15,.55) 100%);
+  }
+  .hero-content{position:relative; z-index:2; padding-bottom:100px; max-width:760px;}
+  .hero-content .eyebrow{color:var(--gold);}
+  .hero-content .eyebrow::before{background:var(--gold);}
+  .hero h1{font-size:clamp(38px,6vw,74px); margin-bottom:22px;}
+  .hero p.lede{font-size:clamp(16px,1.6vw,19px); color:rgba(247,244,236,.82); max-width:480px; margin-bottom:36px;}
+  .hero-ctas{display:flex; gap:16px; flex-wrap:wrap;}
+  .scroll-cue{
+    position:absolute; right:40px; bottom:40px; z-index:2;
+    writing-mode:vertical-rl;
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em;
+    color:rgba(247,244,236,.55); display:flex; align-items:center; gap:10px;
+  }
+  .scroll-cue::after{content:""; width:1px; height:44px; background:rgba(247,244,236,.4); writing-mode:horizontal-tb;}
+  @media(max-width:900px){ .scroll-cue{display:none;} }
+
+  /* ---------- trust bar ---------- */
+  .trustbar{
+    background:var(--green-deep); color:var(--paper);
+    padding:26px 0;
+  }
+  .trustbar .wrap{
+    display:flex; flex-wrap:wrap; gap:28px; justify-content:space-between;
+  }
+  .trust-item{
+    display:flex; align-items:center; gap:10px;
+    font-size:13px; letter-spacing:.02em; color:rgba(247,244,236,.85);
+    flex:1; min-width:200px;
+  }
+  .trust-item .dot{width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0;}
+
+  /* ---------- value prop ---------- */
+  .value-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .value-card{background:var(--paper); padding:44px 36px;}
+  .value-card .media{width:52px; height:52px; margin-bottom:28px; border-radius:50%;}
+  .value-card .media::before{display:none;}
+  .value-card h3{font-size:21px; font-weight:500; margin-bottom:12px;}
+  .value-card p{color:var(--ink-soft); font-size:15px;}
+  @media(max-width:800px){ .value-grid{grid-template-columns:1fr;} }
+
+  /* ---------- budget builder (signature element) ---------- */
+  .builder{background:var(--green-deep); color:var(--paper);}
+  .builder .section-head p{color:rgba(247,244,236,.68);}
+  .builder .eyebrow{color:var(--gold);}
+  .builder .eyebrow::before{background:var(--gold);}
+  .builder-grid{
+    display:grid; grid-template-columns:1.1fr .9fr; gap:64px; align-items:start;
+  }
+  @media(max-width:900px){ .builder-grid{grid-template-columns:1fr; gap:48px;} }
+
+  .field-block{margin-bottom:36px;}
+  .field-label{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.06em;
+    text-transform:uppercase; color:rgba(247,244,236,.55); margin-bottom:16px;
+  }
+  .field-label b{font-family:'Fraunces',serif; font-size:20px; text-transform:none; letter-spacing:0; color:var(--gold); font-weight:500;}
+
+  input[type="range"]{
+    -webkit-appearance:none; width:100%; height:2px;
+    background:rgba(247,244,236,.25); border-radius:2px; outline:none;
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+    background:var(--gold); cursor:pointer; border:3px solid var(--green-deep);
+    box-shadow:0 0 0 1px var(--gold);
+  }
+  input[type="range"]::-moz-range-thumb{
+    width:16px; height:16px; border-radius:50%; background:var(--gold); cursor:pointer; border:3px solid var(--green-deep);
+  }
+
+  .stepper{display:flex; align-items:center; gap:18px;}
+  .stepper button{
+    width:34px; height:34px; border-radius:50%; border:1px solid rgba(247,244,236,.3);
+    font-size:16px; color:var(--paper); transition:.25s;
+  }
+  .stepper button:hover{border-color:var(--gold); color:var(--gold);}
+  .stepper .count{font-family:'Fraunces',serif; font-size:22px; min-width:20px; text-align:center;}
+
+  .chip-row{display:flex; flex-wrap:wrap; gap:10px;}
+  .chip{
+    padding:9px 16px; border:1px solid rgba(247,244,236,.28); border-radius:100px;
+    font-size:13px; letter-spacing:.01em; transition:.25s;
+  }
+  .chip:hover{border-color:rgba(247,244,236,.6);}
+  .chip.active{background:var(--gold); border-color:var(--gold); color:var(--green-deep); font-weight:600;}
+
+  .duration-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .pill-select{
+    padding:10px 18px; border:1px solid rgba(247,244,236,.28); border-radius:100px; font-size:13px;
+    transition:.25s;
+  }
+  .pill-select.active{background:rgba(247,244,236,.12); border-color:var(--gold); color:var(--gold);}
+
+  .preview-card{
+    background:rgba(247,244,236,.06);
+    border:1px solid rgba(247,244,236,.16);
+    border-radius:var(--radius);
+    padding:36px;
+    position:sticky; top:110px;
+  }
+  .preview-card .tag{
+    font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:18px; display:block;
+  }
+  .preview-card p.summary{
+    font-family:'Fraunces',serif; font-size:22px; line-height:1.4; font-weight:400; margin-bottom:28px;
+    min-height:110px;
+  }
+  .preview-card p.summary em{font-style:normal; color:var(--gold);}
+  .preview-card .btn-primary{width:100%; justify-content:center; padding:16px 22px;}
+  .preview-note{font-size:12px; color:rgba(247,244,236,.5); text-align:center; margin-top:14px;}
+
+  /* ---------- tours ---------- */
+  .tour-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:20px;
+  }
+  .tour-card{border:1px solid var(--line); background:#fff; overflow:hidden;}
+  .tour-card .media{aspect-ratio:4/5; border-radius:0;}
+  .tour-card .badge{
+    position:absolute; top:14px; left:14px; z-index:2;
+    background:rgba(247,244,236,.92); color:var(--green-deep);
+    font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+    padding:5px 10px; border-radius:100px;
+  }
+  .tour-body{padding:24px;}
+  .tour-body .dur{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--terracotta); letter-spacing:.04em; margin-bottom:10px; display:block;}
+  .tour-body h3{font-size:19px; font-weight:500; margin-bottom:10px;}
+  .tour-body p{font-size:14px; color:var(--ink-soft); margin-bottom:18px;}
+  .tour-body a{font-size:13px; font-weight:600; color:var(--green); display:inline-flex; align-items:center; gap:6px;}
+  .tour-body a:hover{color:var(--terracotta);}
+  @media(max-width:1000px){
+    .tour-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media(max-width:600px){
+    .tour-grid{grid-auto-flow:column; grid-auto-columns:78%; overflow-x:auto; grid-template-columns:none; scroll-snap-type:x mandatory; padding-bottom:8px; margin:0 -24px; padding-left:24px;}
+    .tour-card{scroll-snap-align:start;}
+  }
+
+  /* ---------- video wall ---------- */
+  .video-grid{
+    display:grid; grid-template-columns:repeat(6,1fr); gap:14px;
+  }
+  .video-card{aspect-ratio:9/16; position:relative; border-radius:var(--radius); overflow:hidden;}
+  .video-card .play{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:3;
+  }
+  .video-card .play span{
+    width:44px; height:44px; border-radius:50%; background:rgba(247,244,236,.92);
+    display:flex; align-items:center; justify-content:center; color:var(--green-deep); font-size:14px;
+    transition:.25s;
+  }
+  .video-card:hover .play span{background:var(--gold);}
+  .social-row{display:flex; gap:16px; margin-top:44px; flex-wrap:wrap;}
+  @media(max-width:900px){
+    .video-grid{grid-auto-flow:column; grid-auto-columns:32%; overflow-x:auto; grid-template-columns:none; margin:0 -24px; padding:0 24px 8px; scroll-snap-type:x mandatory;}
+    .video-card{scroll-snap-align:start;}
+  }
+
+  /* ---------- how it works ---------- */
+  .steps{
+    display:grid; grid-template-columns:repeat(4,1fr); position:relative;
+  }
+  .steps::before{
+    content:""; position:absolute; top:20px; left:0; right:0; height:1px; background:var(--line);
+  }
+  .step{padding-right:28px; position:relative;}
+  .step .num{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--terracotta);
+    background:var(--paper); display:inline-block; padding-right:12px; position:relative; z-index:1; margin-bottom:26px;
+  }
+  .step h3{font-size:17px; font-weight:500; margin-bottom:10px;}
+  .step p{font-size:14px; color:var(--ink-soft);}
+  @media(max-width:800px){
+    .steps{grid-template-columns:1fr; gap:36px;}
+    .steps::before{display:none;}
+  }
+
+  /* ---------- testimonials ---------- */
+  .testi-row{
+    display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:10px; margin:0 -40px; padding-left:40px; padding-right:40px;
+  }
+  .testi-card{
+    min-width:340px; scroll-snap-align:start;
+    background:var(--paper-deep); border:1px solid var(--line); padding:32px; border-radius:var(--radius);
+  }
+  .testi-card p.quote{font-family:'Fraunces',serif; font-size:18px; line-height:1.5; margin-bottom:24px;}
+  .testi-who{display:flex; align-items:center; gap:12px;}
+  .testi-who .media{width:38px; height:38px; border-radius:50%;}
+  .testi-who .media::before{display:none;}
+  .testi-who span{font-size:13px; color:var(--ink-soft);}
+  .testi-who b{display:block; font-size:14px; font-weight:600;}
+
+  /* ---------- future services ---------- */
+  .future{background:var(--paper-deep);}
+  .future-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  .future-card{
+    border:1px dashed var(--line); padding:28px 22px; opacity:.72; transition:.3s;
+  }
+  .future-card:hover{opacity:1;}
+  .future-card .soon{
+    font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--terracotta); border:1px solid var(--terracotta); display:inline-block; padding:3px 9px; border-radius:100px; margin-bottom:16px;
+  }
+  .future-card h3{font-size:16px; font-weight:500; margin-bottom:8px;}
+  .future-card p{font-size:13px; color:var(--ink-soft);}
+  @media(max-width:800px){ .future-grid{grid-template-columns:repeat(2,1fr);} }
+
+  /* ---------- final cta ---------- */
+  .final-cta{
+    color:var(--paper); text-align:center; padding:160px 0;
+    position:relative; overflow:hidden;
+  }
+  .final-cta .media{position:absolute; inset:0; border-radius:0;}
+  .final-cta .media::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(15,18,15,.65), rgba(15,18,15,.85));}
+  .final-cta .inner{position:relative; z-index:2; max-width:620px; margin:0 auto;}
+  .final-cta h2{font-size:clamp(30px,5vw,52px); margin-bottom:20px; color:var(--paper);}
+  .final-cta p{color:rgba(247,244,236,.75); font-size:17px; margin-bottom:40px;}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--ink); color:rgba(247,244,236,.7); padding:80px 0 32px;}
+  .foot-grid{display:grid; grid-template-columns:1.6fr repeat(3,1fr); gap:48px; margin-bottom:64px;}
+  .foot-logo{font-family:'Fraunces',serif; font-size:20px; color:var(--paper); margin-bottom:16px;}
+  .foot-logo span{color:var(--terracotta);}
+  footer p.desc{font-size:14px; max-width:280px; line-height:1.7;}
+  footer h4{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:rgba(247,244,236,.4); margin-bottom:20px;}
+  footer ul li{margin-bottom:12px; font-size:14px;}
+  footer ul li a:hover{color:var(--gold);}
+  .foot-bottom{
+    border-top:1px solid rgba(247,244,236,.12); padding-top:28px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    font-size:12.5px; color:rgba(247,244,236,.4);
+  }
+  @media(max-width:800px){ .foot-grid{grid-template-columns:1fr 1fr; gap:36px;} }
+
+  /* ---------- mobile floating cta ---------- */
+  .float-cta{
+    display:none; position:fixed; bottom:18px; left:18px; right:18px; z-index:90;
+    background:var(--terracotta); color:#fff; text-align:center; padding:15px; border-radius:100px;
+    font-size:14px; font-weight:600; box-shadow:0 10px 30px rgba(0,0,0,.25);
+  }
+
+  @media(max-width:900px){
+    .nav-links, header .btn-ghost{display:none;}
+    .hamburger{display:flex;}
+    .float-cta{display:block;}
+    .builder .btn-primary.desktop-only{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header id="site-header">
+  <div class="wrap">
+    <a href="#top" class="logo">Furusato <span>Japan</span></a>
+    <nav>
+      <div class="nav-links">
+        <a href="#tours">Kyoto Tours</a>
+        <a href="#builder">Plan Your Trip</a>
+        <a href="#story">About</a>
+        <a href="#journal">Journal</a>
+      </div>
+      <a href="#builder" class="btn btn-ghost">Contact</a>
+      <a href="#builder" class="btn btn-primary">Plan My Trip</a>
+    </nav>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="media video"><span class="cap">footage — bamboo grove at dawn, vertical loop, 9:16</span></div>
+  <div class="wrap hero-content">
+    <div class="eyebrow">Kyoto, Japan</div>
+    <h1>Design Your Own<br>Japan Trip.</h1>
+    <p class="lede">Tell us your budget, dates, and interests — we'll create a personal Kyoto journey just for you.</p>
+    <div class="hero-ctas">
+      <a href="#builder" class="btn btn-primary">Plan My Trip</a>
+      <a href="#tours" class="btn btn-ghost">See Kyoto Tours</a>
+    </div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<!-- ============ TRUST BAR ============ -->
+<section class="trustbar">
+  <div class="wrap">
+    <div class="trust-item"><span class="dot"></span>Based in Kyoto</div>
+    <div class="trust-item"><span class="dot"></span>Private &amp; Personalized</div>
+    <div class="trust-item"><span class="dot"></span>Local Guides, Real Experiences</div>
+    <div class="trust-item"><span class="dot"></span>Free Consultation</div>
+  </div>
+</section>
+
+<!-- ============ VALUE PROP ============ -->
+<section class="pad">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Why Furusato Japan</div>
+      <h2>Not a package. A journey built around you.</h2>
+    </div>
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="media"><span class="cap" style="display:none"></span></div>
+        <h3>Tailored to You</h3>
+        <p>Your budget, your dates, your interests — every itinerary starts from a conversation, not a catalog.</p>
+      </div>
+      <div class="value-card">
+        <div class="media"></div>
+        <h3>Real Kyoto, Not Just Tourist Spots</h3>
+        <p>We take you where locals actually go — quiet backstreets, family-run shops, mornings before the crowds arrive.</p>
+      </div>
+      <div class="value-card">
+        <div class="media"></div>
+        <h3>From Budget to Itinerary</h3>
+        <p>Tell us what you have to spend. We'll show you what's possible — no guesswork, no hidden costs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BUDGET BUILDER ============ -->
+<section class="pad builder" id="builder">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Your Journey, Your Budget</div>
+      <h2>Tell us your budget.<br>We'll create your Japan.</h2>
+      <p>No fixed packages. Just your trip, designed around what matters to you.</p>
+    </div>
+
+    <div class="builder-grid">
+      <div>
+        <div class="field-block">
+          <div class="field-label"><span>Budget (per person)</span><b id="budgetOut">$2,000</b></div>
+          <input type="range" min="500" max="6000" step="100" value="2000" id="budgetRange">
+        </div>
+
+        <div class="field-block">
+          <div class="field-label"><span>Number of Travelers</span></div>
+          <div class="stepper">
+            <button type="button" id="dec">−</button>
+            <span class="count" id="travelerCount">2</span>
+            <button type="button" id="inc">+</button>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label"><span>Trip Length</span></div>
+          <div class="duration-row" id="durationRow">
+            <span class="pill-select" data-val="3 days">3 days</span>
+            <span class="pill-select active" data-val="5 days">5 days</span>
+            <span class="pill-select" data-val="7 days">7 days</span>
+            <span class="pill-select" data-val="10+ days">10+ days</span>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <div class="field-label"><span>Interests</span></div>
+          <div class="chip-row" id="interestRow">
+            <span class="chip active">Food</span>
+            <span class="chip active">Culture</span>
+            <span class="chip">Nature</span>
+            <span class="chip active">Anime &amp; Pop Culture</span>
+            <span class="chip">Nightlife</span>
+            <span class="chip">Family-friendly</span>
+            <span class="chip">Photography</span>
+          </div>
+        </div>
+
+        <a href="#" class="btn btn-primary desktop-only">Get My Personal Plan</a>
+      </div>
+
+      <div class="preview-card">
+        <span class="tag">Your Plan Preview</span>
+        <p class="summary" id="previewText"></p>
+        <a href="#" class="btn btn-primary">Get My Personal Plan</a>
+        <p class="preview-note">Free consultation. No obligation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KYOTO TOURS ============ -->
+<section class="pad" id="tours">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Kyoto Tours</div>
+      <h2>Not a tour.<br>A local experience.</h2>
+      <p>Small groups. Real neighborhoods. Guided by people who call Kyoto home.</p>
+    </div>
+
+    <div class="tour-grid">
+      <div class="tour-card">
+        <div class="media" style="position:relative;">
+          <span class="badge">Private</span>
+          <span class="cap">photo — guide &amp; travelers, backstreet market, morning</span>
+        </div>
+        <div class="tour-body">
+          <span class="dur">Half day · Morning</span>
+          <h3>Hidden Kyoto Walk</h3>
+          <p>Backstreets and a local morning market, far from the main tourist route.</p>
+          <a href="#builder">Customize This Tour →</a>
+        </div>
+      </div>
+      <div class="tour-card">
+        <div class="media" style="position:relative;">
+          <span class="badge">Private</span>
+          <span class="cap">photo — tea ceremony, close-up, hands</span>
+        </div>
+        <div class="tour-body">
+          <span class="dur">Half day · Early morning</span>
+          <h3>Temples &amp; Tea</h3>
+          <p>Quiet temple grounds before the crowds, followed by a traditional tea experience.</p>
+          <a href="#builder">Customize This Tour →</a>
+        </div>
+      </div>
+      <div class="tour-card">
+        <div class="media" style="position:relative;">
+          <span class="badge">Private</span>
+          <span class="cap">photo — local diner, group tasting</span>
+        </div>
+        <div class="tour-body">
+          <span class="dur">Full day</span>
+          <h3>Food Lovers' Kyoto</h3>
+          <p>The diners and stalls only locals know — no tourist menus, no translations needed.</p>
+          <a href="#builder">Customize This Tour →</a>
+        </div>
+      </div>
+      <div class="tour-card">
+        <div class="media" style="position:relative;">
+          <span class="badge">Private</span>
+          <span class="cap">photo — lantern-lit street, dusk</span>
+        </div>
+        <div class="tour-body">
+          <span class="dur">Evening · 3 hours</span>
+          <h3>Kyoto by Night</h3>
+          <p>Lantern-lit streets and a quieter, more intimate side of the city after dark.</p>
+          <a href="#builder">Customize This Tour →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SNS / VIDEO WALL ============ -->
+<section class="pad" id="journal" style="background:var(--paper-deep);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">From Our Channel</div>
+      <h2>See Kyoto through our eyes.</h2>
+      <p>Follow our latest videos from the streets of Kyoto.</p>
+    </div>
+    <div class="video-grid">
+      <div class="video-card media video"><div class="play"><span>▶</span></div></div>
+      <div class="video-card media video"><div class="play"><span>▶</span></div></div>
+      <div class="video-card media video"><div class="play"><span>▶</span></div></div>
+      <div class="video-card media video"><div class="play"><span>▶</span></div></div>
+      <div class="video-card media video"><div class="play"><span>▶</span></div></div>
+      <div class="video-card media video"><div class="play"><span>▶</span></div></div>
+    </div>
+    <div class="social-row">
+      <a href="#" class="btn btn-ghost" style="border-color:var(--line); color:var(--ink);">Subscribe on YouTube</a>
+      <a href="#" class="btn btn-ghost" style="border-color:var(--line); color:var(--ink);">Follow on Instagram</a>
+      <a href="#" class="btn btn-ghost" style="border-color:var(--line); color:var(--ink);">Follow on TikTok</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="pad" id="story">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How It Works</div>
+      <h2>From idea to itinerary,<br>in four steps.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="num">01</span>
+        <h3>Tell us your budget &amp; interests</h3>
+        <p>A short form — no commitment, just your preferences.</p>
+      </div>
+      <div class="step">
+        <span class="num">02</span>
+        <h3>We design your personal plan</h3>
+        <p>Our Kyoto-based team puts together an itinerary built around you.</p>
+      </div>
+      <div class="step">
+        <span class="num">03</span>
+        <h3>Review &amp; adjust together</h3>
+        <p>We refine the plan with you until it feels right.</p>
+      </div>
+      <div class="step">
+        <span class="num">04</span>
+        <h3>Enjoy your trip in Kyoto</h3>
+        <p>Travel with a local guide who knows the city, and you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="pad" style="background:var(--paper-deep);">
+  <div class="wrap" style="margin-bottom:0;">
+    <div class="section-head" style="margin-bottom:44px;">
+      <div class="eyebrow">Voices</div>
+      <h2>Travelers who trusted us with their Japan.</h2>
+    </div>
+  </div>
+  <div class="testi-row">
+    <div class="testi-card">
+      <p class="quote">"They didn't just show us Kyoto — they let us live it, even for a week."</p>
+      <div class="testi-who"><div class="media"></div><div><b>Emma R.</b><span>United Kingdom</span></div></div>
+    </div>
+    <div class="testi-card">
+      <p class="quote">"Our budget was modest, but the plan never felt like a compromise."</p>
+      <div class="testi-who"><div class="media"></div><div><b>Marco T.</b><span>Italy</span></div></div>
+    </div>
+    <div class="testi-card">
+      <p class="quote">"Best decision of the trip — a guide who actually listened to what we wanted."</p>
+      <div class="testi-who"><div class="media"></div><div><b>Sarah &amp; Jake</b><span>Australia</span></div></div>
+    </div>
+    <div class="testi-card">
+      <p class="quote">"Felt like traveling with a friend who happened to know everything about Kyoto."</p>
+      <div class="testi-who"><div class="media"></div><div><b>Li Wei</b><span>Singapore</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUTURE SERVICES ============ -->
+<section class="pad future">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:36px;">
+      <div class="eyebrow">Looking Ahead</div>
+      <h2 style="font-size:26px;">More ways to experience Japan — coming soon.</h2>
+    </div>
+    <div class="future-grid">
+      <div class="future-card">
+        <span class="soon">Coming Soon</span>
+        <h3>Hotels &amp; Stays</h3>
+        <p>Handpicked accommodation to match your trip.</p>
+      </div>
+      <div class="future-card">
+        <span class="soon">Coming Soon</span>
+        <h3>Japanese Lessons</h3>
+        <p>Private lessons, online or in Kyoto.</p>
+      </div>
+      <div class="future-card">
+        <span class="soon">Coming Soon</span>
+        <h3>Study in Japan</h3>
+        <p>Guidance for language school &amp; university paths.</p>
+      </div>
+      <div class="future-card">
+        <span class="soon">Coming Soon</span>
+        <h3>Life in Japan</h3>
+        <p>Support for a longer stay, from visas to housing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final-cta">
+  <div class="media video"><span class="cap">footage — twilight over Kyoto rooftops</span></div>
+  <div class="wrap inner">
+    <h2>Ready to design<br>your Japan?</h2>
+    <p>Free consultation. No fixed packages. Just your trip, built around you.</p>
+    <a href="#builder" class="btn btn-primary">Plan My Trip</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">Furusato <span>Japan</span></div>
+        <p class="desc">A Kyoto-based travel service for the world. Your journey, your budget, your Japan.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#tours">Kyoto Tours</a></li>
+          <li><a href="#builder">Plan Your Trip</a></li>
+          <li><a href="#story">About</a></li>
+          <li><a href="#journal">Journal</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#">hello@furusato-japan.jp</a></li>
+          <li><a href="#">WhatsApp</a></li>
+          <li><a href="#">15 min from Kyoto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Furusato Japan. All rights reserved.</span>
+      <span>Based near Kyoto, Japan</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#builder" class="float-cta">Plan My Trip</a>
+
+<script>
+  // header scroll state
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // budget builder state
+  const state = { budget: 2000, travelers: 2, duration: '5 days', interests: ['Food','Culture','Anime & Pop Culture'] };
+
+  const budgetRange = document.getElementById('budgetRange');
+  const budgetOut = document.getElementById('budgetOut');
+  budgetRange.addEventListener('input', e => {
+    state.budget = +e.target.value;
+    budgetOut.textContent = '$' + state.budget.toLocaleString();
+    renderPreview();
+  });
+
+  const travelerCount = document.getElementById('travelerCount');
+  document.getElementById('inc').addEventListener('click', () => {
+    state.travelers = Math.min(state.travelers + 1, 10);
+    travelerCount.textContent = state.travelers;
+    renderPreview();
+  });
+  document.getElementById('dec').addEventListener('click', () => {
+    state.travelers = Math.max(state.travelers - 1, 1);
+    travelerCount.textContent = state.travelers;
+    renderPreview();
+  });
+
+  document.querySelectorAll('#durationRow .pill-select').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('#durationRow .pill-select').forEach(e => e.classList.remove('active'));
+      el.classList.add('active');
+      state.duration = el.dataset.val;
+      renderPreview();
+    });
+  });
+
+  document.querySelectorAll('#interestRow .chip').forEach(el => {
+    el.addEventListener('click', () => {
+      el.classList.toggle('active');
+      state.interests = [...document.querySelectorAll('#interestRow .chip.active')].map(c => c.textContent);
+      renderPreview();
+    });
+  });
+
+  function renderPreview(){
+    const interestsText = state.interests.length
+      ? state.interests.join(', ')
+      : 'anything you love';
+    document.getElementById('previewText').innerHTML =
+      `With <em>$${state.budget.toLocaleString()}</em> for <em>${state.travelers} traveler${state.travelers>1?'s':''}</em> over <em>${state.duration}</em>, focused on <em>${interestsText}</em> — a personal Kyoto itinerary is ready to be designed.`;
+  }
+  renderPreview();
+
+  // mobile hamburger (simple toggle placeholder — expand nav-links as a dropdown)
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks = document.querySelector('.nav-links');
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.style.display === 'flex';
+    navLinks.style.cssText = open
+      ? ''
+      : 'display:flex; flex-direction:column; position:fixed; top:64px; left:0; right:0; background:var(--paper); padding:24px; gap:20px; border-bottom:1px solid var(--line);';
+  });
+</script>
+</body>
+</html>
